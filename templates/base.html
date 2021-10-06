@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yash Jain</title>
+
+  <link rel="icon" type="image/icon type" href="{{ about.profile_img.url }}" sizes="32x32">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body onload="effect()">
+
+  <div id="loader"></div>
+
+  <nav>
+    <div class="logo">
+      <a href=""> My Portfolio </a>
+    </div>
+    <input type="checkbox" id="check">
+    <label for="check" class="menu-btn">
+      <i class="fa fa-bars"></i>
+    </label>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="/admin/" target="_blank">Admin</a></li>
+    </ul>
+  </nav>
+  <script>
+    $(document).ready(function(){    
+      $('nav ul li a').click(function() {
+        $("#check").prop("checked",false);   
+      });  
+
+    }); 
+  </script>
+  <div class="welcome-div des-break">
+    <p class="welcome"> < WELCOME /> </p>
+    <p id="effect"></p>
+    <script>
+      var i = 0;
+      var text = "Thank's for visiting My Portfolio :)";
+      var speed = 100;
+
+      function effect(){
+        if(i < text.length){
+          document.getElementById("effect").innerHTML += text.charAt(i);
+          i++;
+          setTimeout(effect, speed);
+        }
+      }
+    </script>
+  </div>
+  <!-- About -->
+  <div class="div-card" style="margin-bottom: 10px;" id="about">
+    <p class="f-ald" style="margin-top: 20px;">About Me</p>
+  </div>
+  <div class="container-main">
+    <div class="profile-side">
+      <img src="{{ about.profile_img.url }}" alt="Profile Image" width="380" height="370">
+      <p> Yash Jain </p>
+    </div>
+    <div class="content-side">
+      <p class="f-eco" id="pro-title" style="font-size: 28px;">
+        {{ about.title }} 
+      </p>
+      <br/>
+      <p class="f-gab" id="profile-desc">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{ about.first_description }}
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{ about.second_description }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="div-card" id="education">
+    <p class="f-ald">Education</p>
+  </div>
+  <div class="container">
+    <div class="row">
+      {% for edu in education %}
+      <div class="card">
+        <p class="card-title"> {{ edu.school_name }} </p>
+        <p class="pd-10 f-eco"> {{ edu.school_location }} </p>
+        <p class="pd-tb-10 f-gab"> 
+          {{ edu.degree }}
+
+          {% if edu.specialization != None %}
+            in {{ edu.specialization }}
+
+          {% endif %}
+        </p>
+        <p class="pd-tb-10 f-gab">
+          Percentage : {{edu.percentage}}
+          <span class="extra" style="right: 0;">
+            {{edu.start_year}} - {{edu.end_year}}
+          </span>
+        </p>
+        
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Resume -->
+  <div class="des-break res-div">
+    <div class="res-text">
+      <p> < Resume /> </p>
+    </div>
+    <div class="res-btn">
+      <a href="{{about.resume.url}}" download="YashJain_Resume.pdf">
+        <button class="pd-10">
+          Download <i class="fa fa-download"></i>
+        </button>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Experience -->
+  <div class="div-card" id="experience">
+    <p class="f-ald">Experience</p>
+  </div>
+  <div class="container">
+    <div class="row">
+      {% for exp in experience %}
+      <div class="card">
+        <p class="card-title"> {{ exp.company }} </p>
+        <p class="pd-10 f-eco"> {{ exp.job_profile }} </p>
+        <p class="pd-tb-10  f-gab"> {{ exp.job_description }} </p><br/>
+        <p class="pd-tb-10  f-gab extra" style="right: 0;"> {{exp.get_start_month_display}} {{exp.start_year}} - {{exp.get_end_month_display}} {{exp.end_year}}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div class="div-card" id="skills">
+    <p class="f-ald">Skills</p>
+  </div>
+  <div class="container">
+    <div class="row">
+      {% for sk in skill %}
+      <div class="skill-card f-gab">
+          {{sk.name}}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <div class="div-card" id="projects">
+    <p class="f-ald">Projects</p>
+  </div>
+  <div class="container">
+    <div class="row">
+      {% for pro in project %}
+      <div class="card">
+        <p class="card-title"> {{ pro.project_title }} </p>
+        <p class="pd-10 f-eco"> {{ pro.get_domain_display }} </p>
+        <p class="pd-tb-10  f-gab"> {{ pro.project_description }} </p>
+        <p class="pd-tb-10  f-gab">  </p>
+        {% if pro.git_link != "True" %}
+          <a href="{{ pro.git_link }}" target="_blank"><i class="fa fa-github" style="font-size: 24px; color: black;"></i></a>
+        {% else %} 
+          <br/>
+        {% endif %}
+        <p class="pd-tb-10  f-gab extra" style="right: 0;"> - {{pro.get_status_display}} </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- Footer -->
+  <section class="footer" style="font-family: 'Poppins', sans-serif;">
+    <ul class="banner">
+      <li>
+        <a href="https://www.hackerrank.com/yashhjainn" target="_blank">
+          <span class="iconify" data-icon="simple-icons:hackerrank" style="border: 0.5px solid white; color: rgb(0, 109, 24);"></span> HackerRank</a>
+      </li>
+      <li>
+        <a href="https://www.codechef.com/users/yashjain_20" target="_blank">
+          <span class="iconify" data-icon="simple-icons:codechef" style="color: rgb(143, 67, 32);"></span> CodeChef</a>
+      </li>
+      <li>
+        <a href="https://leetcode.com/yashhjainn/"target="_blank" >
+          <span class="iconify" data-icon="cib:leetcode" style="color: rgb(177, 116, 47);"></span> LeetCode</a>
+      </li>
+      <li>
+        <a href="https://auth.geeksforgeeks.org/user/yashjain9908/" target="_blank">
+          <span class="iconify" data-icon="simple-icons:geeksforgeeks" style="color: rgb(0, 109, 24);"></span> GeekForGeeks</a>
+      </li>
+    </ul>
+    <ul class="banner">
+      <li>
+        <a href=" ">Home</a>
+      </li>
+      <li>
+        <a href="#resume">Resume</a>
+      </li>
+      <li>
+        <a href="mailto: yashjain9908.com">Email</a>
+      </li>
+    </ul>
+    <div class="social">
+      <a href="https://www.linkedin.com/in/yashh-jain/" target="_blank"><i class="fa fa-linkedin"></i></a>
+      <a href="https://github.com/yashhjaiin" target="_blank"><i class="fa fa-github"></i></a>
+      <a href="https://www.instagram.com/__yashjain_/" target="_blank"><i class="fa fa-instagram"></i></a>
+      <a href="https://www.facebook.com/yashjain9908/" target="_blank"><i class="fa fa-facebook"></i></a>
+    </div>
+    <br/>
+    <p class="copyright">
+      <i class="fa fa-copyright" style="font-size:20px"></i> YashJain @ 2021.
+    </p>
+  </section>
+
+  <script>
+    var loader = document.getElementById("loader");
+
+    window.addEventListener('load', function(){
+      loader.style.display = "none";
+    })
+  </script>
+</body>
+</html>
