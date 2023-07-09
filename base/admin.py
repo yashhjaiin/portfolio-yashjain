@@ -1,7 +1,25 @@
 from django.contrib import admin
 from .views import *
 from .forms import *
+
+from datetime import date
 # Register your models here.
+
+class AboutAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields' : ('name', 'title', 'first_description', 'second_description')
+        }),
+        ( 'Files', {
+            'fields' : [ ('profile_img', 'resume') ]    
+        }),
+        ( 'Social Media', {
+            'fields' : [ ('linkedin', 'github', 'instagram', 'facebook') ]    
+        }),
+        ( 'Coding Platforms', {
+            'fields' : [ ('HackerRank', 'CodeChef', 'LeetCode', 'GeekforGeeks')]
+        }),
+    )
 
 class EducationAdmin(admin.ModelAdmin):
     fields = [ 'degree', 'school_location', 'school_name', 'specialization', 
@@ -22,7 +40,7 @@ class EducationAdmin(admin.ModelAdmin):
 class ExperienceAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields' : ('company', 'job_profile', 'job_description')
+            'fields' : ('company', 'job_profile', 'job_description', 'current')
         }),
         ( 'Duration Start', {
             'fields' : [ ('start_month', 'start_year') ]    
@@ -31,19 +49,29 @@ class ExperienceAdmin(admin.ModelAdmin):
             'fields' : [ ('end_month', 'end_year') ]    
         }),
     )
-    list_display = ('company', 'job_profile','duration','period')
+    list_display = ('company', 'job_profile', 'current', 'duration', 'period')
     list_display_links = ('company',)
     search_fields = ['company']
     form = ExperienceAdminForm
 
     def duration(self, obj):
+        if obj.current == True:
+            obj.end_month = str(date.today().month)
+            obj.end_year = str(date.today().year)
+
         return "%s %s - %s %s" %(obj.get_start_month_display().upper(), obj.start_year,
                  obj.get_end_month_display().upper(), obj.end_year)
     
     def period(self, obj):
+        
         month_diff = int(obj.end_month) - int(obj.start_month)
         year_diff = int(obj.end_year) - int(obj.start_year)
         return "%d %s %d %s" %(year_diff, "Year", month_diff, "Month")
+
+    def get_queryset(self, request):
+        queryset = super(ExperienceAdmin, self).get_queryset(request)
+        queryset = queryset.order_by('-start_year')
+        return queryset
 
 class SkillAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
@@ -61,7 +89,7 @@ class ProjectsAdmin(admin.ModelAdmin):
         queryset = queryset.order_by('status')
         return queryset
 
-admin.site.register(About)
+admin.site.register(About, AboutAdmin)
 admin.site.register(Education, EducationAdmin)
 admin.site.register(Experience, ExperienceAdmin)
 admin.site.register(Skill, SkillAdmin)
