@@ -6,6 +6,7 @@ You can see the Project here [portfolio-yashjain](https://portfolio-yashjain.her
 Also you can similar site for you by making customization through **Admin Panel**
 
 <!-- Admin Panel image -->
+![Admin Panel ScreenShot](media/images/DjangoAdmin.png)
 
 You will be required to have python installed in your device. After that you can follow the below steps
 
