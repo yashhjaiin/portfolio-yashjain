@@ -3,6 +3,7 @@ from .views import *
 from .forms import *
 
 from datetime import date
+# from dateutil import relativedelta
 # Register your models here.
 
 class AboutAdmin(admin.ModelAdmin):
@@ -63,14 +64,16 @@ class ExperienceAdmin(admin.ModelAdmin):
                  obj.get_end_month_display().upper(), obj.end_year)
     
     def period(self, obj):
-        
-        month_diff = int(obj.end_month) - int(obj.start_month)
-        year_diff = int(obj.end_year) - int(obj.start_year)
-        return "%d %s %d %s" %(year_diff, "Year", month_diff, "Month")
+        start_date = datetime.strptime(obj.start_month + '/' + obj.start_year, "%m/%Y")
+        end_date = datetime.strptime(obj.end_month + '/' + obj.end_year, "%m/%Y")
+
+        diff = relativedelta.relativedelta(end_date, start_date)
+        # year_diff = int(obj.end_year) - int(obj.start_year)
+        return "%d %s %d %s" %(diff.years, "Year", diff.months, "Month")
 
     def get_queryset(self, request):
         queryset = super(ExperienceAdmin, self).get_queryset(request)
-        queryset = queryset.order_by('-start_year')
+        queryset = queryset.order_by('start_year', 'start_month')
         return queryset
 
 class SkillAdmin(admin.ModelAdmin):
