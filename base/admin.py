@@ -3,7 +3,6 @@ from .views import *
 from .forms import *
 
 from datetime import date
-# from dateutil import relativedelta
 # Register your models here.
 
 class AboutAdmin(admin.ModelAdmin):
@@ -21,6 +20,7 @@ class AboutAdmin(admin.ModelAdmin):
             'fields' : [ ('HackerRank', 'CodeChef', 'LeetCode', 'GeekforGeeks')]
         }),
     )
+    form = AboutAdminForm
 
 class EducationAdmin(admin.ModelAdmin):
     fields = [ 'degree', 'school_location', 'school_name', 'specialization', 
@@ -60,21 +60,26 @@ class ExperienceAdmin(admin.ModelAdmin):
             obj.end_month = str(date.today().month)
             obj.end_year = str(date.today().year)
 
+            return "%s %s - %s" %(obj.get_start_month_display().upper(), obj.start_year, 'Present')
+
         return "%s %s - %s %s" %(obj.get_start_month_display().upper(), obj.start_year,
                  obj.get_end_month_display().upper(), obj.end_year)
     
     def period(self, obj):
-        start_date = datetime.strptime(obj.start_month + '/' + obj.start_year, "%m/%Y")
-        end_date = datetime.strptime(obj.end_month + '/' + obj.end_year, "%m/%Y")
+        year_diff = int(obj.end_year) - int(obj.start_year)
+        month_diff = int(obj.end_month) - int(obj.start_month)
+        period = ""
 
-        diff = relativedelta.relativedelta(end_date, start_date)
-        # year_diff = int(obj.end_year) - int(obj.start_year)
-        return "%d %s %d %s" %(diff.years, "Year", diff.months, "Month")
+        months = (year_diff * 12) + month_diff
+        if months > 12:
+            year_diff = int(months/12)
+            period += str(year_diff) + " year "
+            months -= (year_diff *12)
 
-    def get_queryset(self, request):
-        queryset = super(ExperienceAdmin, self).get_queryset(request)
-        queryset = queryset.order_by('start_year', 'start_month')
-        return queryset
+        if months > 0:
+            period += str(months) + " month"
+
+        return period
 
 class SkillAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')

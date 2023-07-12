@@ -98,7 +98,9 @@
 
   <!-- Education -->
   <div class="div-card" id="education">
-    <p class="f-ald">Education</p>
+    {% if education.count >= 1 %}
+      <p class="f-ald">Education</p>
+    {% endif %}
   </div>
   <div class="container">
     <div class="row">
@@ -132,7 +134,7 @@
       <p> < Resume /> </p>
     </div>
     <div class="res-btn">
-      <a href="{{about.resume.url}}" download="YashJain_Resume.pdf">
+      <a href="{{about.resume.url}}" download="MainResume.pdf">
         <button class="pd-10">
           Download <i class="fa fa-download"></i>
         </button>
@@ -142,7 +144,9 @@
   
   <!-- Experience -->
   <div class="div-card" id="experience">
-    <p class="f-ald">Experience</p>
+    {% if experience.count >= 1 %}
+      <p class="f-ald">Experience</p>
+    {% endif %}
   </div>
   <div class="container">
     <div class="row">
@@ -163,7 +167,9 @@
 
   <!-- Skills -->
   <div class="div-card" id="skills">
-    <p class="f-ald">Skills</p>
+    {% if skill.count >= 1 %}
+      <p class="f-ald">Skills</p>
+    {% endif %}
   </div>
   <div class="container">
     <div class="row">
@@ -177,7 +183,9 @@
 
   <!-- Projects -->
   <div class="div-card" id="projects">
-    <p class="f-ald">Projects</p>
+    {% if project.count >= 1 %}
+      <p class="f-ald">Projects</p>
+    {% endif %}
   </div>
   <div class="container">
     <div class="row">

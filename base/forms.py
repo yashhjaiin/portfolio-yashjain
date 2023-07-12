@@ -1,8 +1,37 @@
+import re
 from django import forms
 from .models import *
 
 from datetime import date
-# from dateutil import relativedelta
+
+class AboutAdminForm(forms.ModelForm):
+    class Meta:
+        model = About
+        fields = ('linkedin', 'github', 'instagram', 'facebook', 'HackerRank', 'CodeChef', 'LeetCode', 'GeekforGeeks')
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+
+        regex = ("((http|https)://)(www.)?" + "[a-zA-Z0-9@:%._\\+~#?&//=]" +
+             "{2,256}\\.[a-z]" + "{2,6}\\b([-a-zA-Z0-9@:%" + "._\\+~#?&//=]*)")
+        # Compile the ReGex
+        compiled_exp = re.compile(regex)
+
+        # link validation
+        for link in AboutAdminForm._meta.fields:
+            if not(re.search(compiled_exp, cleaned_data.get(link))):
+                raise forms.ValidationError("Enter Valid Link for " + link)
+
+        return cleaned_data 
+
+    def isValidURL(link):
+        # Regex to check valid URL
+        
+        if not((link == "") or (link == None)):
+            if not(re.search(compiled_exp, link)):
+                return False
+        
+        return True
 
 class EducationAdminForm(forms.ModelForm):
     class Meta:
@@ -29,9 +58,12 @@ class ExperienceAdminForm(forms.ModelForm):
         # year validation
         start_year = cleaned_data.get('start_year')
         end_year = cleaned_data.get('end_year')
+
+        start_month = cleaned_data.get('start_month')
+        end_month = cleaned_data.get('end_month')
         current = cleaned_data.get('current')
 
-        if current == True:
+        if current:
             end_month = str(date.today().month)
             end_year = str(date.today().year)
 
@@ -41,8 +73,6 @@ class ExperienceAdminForm(forms.ModelForm):
                 
         # month validation
         if year_diff == 0:
-            start_month = cleaned_data.get('start_month')
-            end_month = cleaned_data.get('end_month')
             month_diff = (int(end_month)) - (int(start_month))
             if(month_diff < 0):
                 raise forms.ValidationError("Start month cannot be greater than End month")

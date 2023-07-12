@@ -51,6 +51,9 @@ class Education(models.Model):
         return self.school_name
 
 class Experience(models.Model):
+    class Meta:
+        ordering = ['-start_year']
+
     MONTH_CHOICES = [(str(i), calendar.month_name[i]) for i in range(1,13)]
 
     company = models.CharField(max_length=30, verbose_name="Company Name")
