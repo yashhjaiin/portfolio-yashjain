@@ -85,7 +85,7 @@ Go to users tab and delete other users to avoid issues. You can refer to [How to
 
 Created with :heart: by Yash Jain. Thank You :relieved:
 
-# Resume
+# RESUME
 
 
 | Yash Jain                                           [![][image1]](https://www.linkedin.com/in/yashh-jain/)     [![][image2]](https://github.com/yashhjaiin)   Software Engineer                                                                                             7977009981  |  [yashjain9908@gmail.com](mailto:yashjain9908@gmail.com)  |  Mumbai, India  SUMMARY  Results-driven Software Engineer with 2.5+ years’ experience in Microsoft Dynamics 365 Commerce, .NET, and React. Proven ability to deliver scalable retail solutions and lead cross-functional teams in Agile environments. |  |
