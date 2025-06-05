@@ -1,7 +1,5 @@
-<div>
-  <a href="#readme">:blue_book: README</a> |
-  <a href="#resume">:page_facing_up: Resume</a>
-</div>
+[![README](https://img.shields.io/badge/README-blue)](#readme)
+[![RESUME](https://img.shields.io/badge/RESUME-grey)](#resume)
 
 # README
 
